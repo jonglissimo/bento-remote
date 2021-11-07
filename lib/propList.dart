@@ -91,7 +91,7 @@ class PropListState extends State<PropList> {
     for (String arg in sequencesList) {
       if (arg.contains(".meta")) {
         String sequenceName = arg.split(".meta")[0];
-        sequences.add(sequenceName.substring(1, sequenceName.length));
+        sequences.add(sequenceName.replaceAll(' ', ''));
       }
     }
     return sequences;
