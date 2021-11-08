@@ -10,20 +10,20 @@ class OSCHandler {
   String remoteHostIp;
   int remotePort;
 
-  Future<void> setRawDataGramSocket() async{
-    int socketPort = 10000;
-    socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, socketPort);
-    socket.broadcastEnabled = true;
-    this.listen(this.onMsgReceived);
-
-  }
-
   OSCHandler({  this.remoteHostIp, this.remotePort, this.onMsgReceived }) {
     //Create Socket
     setRawDataGramSocket();
 
     //Set Remote Host IP Address
     this.setRemoteHost();
+  }
+
+  Future<void> setRawDataGramSocket() async{
+    int socketPort = 10000;
+    socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, socketPort);
+    socket.broadcastEnabled = true;
+    this.listen(this.onMsgReceived);
+
   }
 
   Future<void> listen(void Function(OSCMessage msg) onData) async {

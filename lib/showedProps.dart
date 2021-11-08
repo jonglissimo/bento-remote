@@ -17,19 +17,19 @@ class _ShowedPropsState extends State<ShowedProps> {
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(
-      builder: (context, providedClubs, child) {
+      builder: (context, globalState, child) {
         return Scrollbar(
           child: SingleChildScrollView(
             child: Container(
               child: ToggleButtons(
                 direction: Axis.vertical,
                 fillColor: colorFromHex(detectPropsBgColor),
-                children: providedClubs.propInfoMap.keys.toList().asMap().entries.map((entry) =>
+                children: globalState.propInfoMap.keys.toList().asMap().entries.map((entry) =>
                     ToggleProp(macAddress: entry.value, propIndex: entry.key + 1)).toList(),
-                isSelected: providedClubs.currentPropSelections,
+                isSelected: globalState.currentPropSelections,
                 onPressed: (int index) {
                   setState(() {
-                    providedClubs.updateCurrentPropSelections(index);
+                    globalState.updateCurrentPropSelections(index);
                   });
                 },
               ),

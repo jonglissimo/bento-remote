@@ -14,7 +14,7 @@ class _SettingsSectionState extends State<SettingsSection> {
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(
-      builder: (context, providedClubs, child) {
+      builder: (context, globalState, child) {
 
         double screenWidth = MediaQuery.of(context).size.width;
         double tabSectionWidth = screenWidth * 0.7;
@@ -44,20 +44,20 @@ class _SettingsSectionState extends State<SettingsSection> {
                         transform: Matrix4.translationValues(0, 2, 0),
                         height: settingsSliderHeight,
                         child: Slider(
-                          value: providedClubs.brightnessValue,
+                          value: globalState.brightnessValue,
                           min: 0,
                           max: 1,
                           activeColor: Colors.amber,
                           onChanged: (newBrightnessValue) {
-                            providedClubs.brightnessValue = newBrightnessValue;
-                            providedClubs.changeBrightnessOfSelected(providedClubs.brightnessValue);
+                            globalState.brightnessValue = newBrightnessValue;
+                            globalState.changeBrightnessOfSelected(globalState.brightnessValue);
                           },
                         ),
                       ),
                       Container(
                         width: tabSectionWidth * 0.1,
                         child: Text(
-                          (providedClubs.brightnessValue * 100).toInt().toString(),
+                          (globalState.brightnessValue * 100).toInt().toString(),
                           style: TextStyle(
                             color: Colors.white
                           ),
@@ -87,20 +87,20 @@ class _SettingsSectionState extends State<SettingsSection> {
                         transform: Matrix4.translationValues(0, 2, 0),
                         height: settingsSliderHeight,
                         child: Slider(
-                          value: providedClubs.irBrightnessValue,
+                          value: globalState.irBrightnessValue,
                           min: 0,
                           max: 1,
                           activeColor: Colors.amber,
                           onChanged: (newBrightnessValue) {
-                            providedClubs.irBrightnessValue = newBrightnessValue;
-                            providedClubs.changeIrBrightnessOfSelected(providedClubs.irBrightnessValue);
+                            globalState.irBrightnessValue = newBrightnessValue;
+                            globalState.changeIrBrightnessOfSelected(globalState.irBrightnessValue);
                           },
                         ),
                       ),
                       Container(
                         width: tabSectionWidth * 0.1,
                         child: Text(
-                          (providedClubs.irBrightnessValue * 100).toInt().toString(),
+                          (globalState.irBrightnessValue * 100).toInt().toString(),
                           style: TextStyle(
                             color: Colors.white
                           ),

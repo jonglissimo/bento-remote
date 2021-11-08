@@ -18,7 +18,7 @@ class _SequenceSectionState extends State<SequenceSection> {
   Widget build(BuildContext context) {
 
     return Consumer<StateModel>(
-          builder: (context, providedClubs, child) {
+          builder: (context, globalState, child) {
 
             double screenWidth = MediaQuery.of(context).size.width;
             double tabSectionWidth = screenWidth * 0.7;
@@ -27,7 +27,7 @@ class _SequenceSectionState extends State<SequenceSection> {
             double spacerHeight = 2;
 
             double getSequenceStartTime() {
-              return (providedClubs.startMinute.toDouble() * 60) + providedClubs.startSecond;
+              return (globalState.startMinute.toDouble() * 60) + globalState.startSecond;
             }
 
             return Container(
@@ -52,11 +52,11 @@ class _SequenceSectionState extends State<SequenceSection> {
                             Theme(
                               data: ThemeData(unselectedWidgetColor: Colors.white),
                               child: Checkbox(
-                                  value: providedClubs.syncToMusic,
+                                  value: globalState.syncToMusic,
                                   activeColor: Colors.grey,
                                   onChanged:(newValue){
                                     setState(() {
-                                      providedClubs.syncToMusic = newValue;
+                                      globalState.syncToMusic = newValue;
                                     });
                                   }
                               ),
@@ -82,10 +82,19 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   Container(
                                     width: tabSectionWidth * 0.3,
                                     height: 40,
-                                    color: colorFromHex(detectPropsBtnColor),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: RadialGradient(
+                                        radius: 1.2,
+                                        colors: [
+                                          colorFromHex(btnGradient1),
+                                          colorFromHex(btnGradient2),
+                                        ],
+                                      ),
+                                    ),
                                     child: TextButton(
                                         onPressed: () {
-                                          providedClubs.turnOnIdsOfSelected();
+                                          globalState.turnOnIdsOfSelected();
                                         },
                                         child: Text(
                                           "On",
@@ -101,10 +110,19 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   Container(
                                     width: tabSectionWidth * 0.3,
                                     height: 40,
-                                    color: colorFromHex(detectPropsBtnColor),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: RadialGradient(
+                                        radius: 1.2,
+                                        colors: [
+                                          colorFromHex(btnGradient1),
+                                          colorFromHex(btnGradient2),
+                                        ],
+                                      ),
+                                    ),
                                     child: TextButton(
                                         onPressed: () {
-                                          providedClubs.turnOffIdsOfSelected();
+                                          globalState.turnOffIdsOfSelected();
                                         },
                                         child: Text(
                                           "Off",
@@ -134,7 +152,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                             Container(
                               width: tabSectionWidth * 0.6,
                               child: DropdownButton(
-                                value: providedClubs.dropdownValue,
+                                value: globalState.dropdownValue,
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 hint: Text(
                                   "No Sequences",
@@ -143,7 +161,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   ),
                                 ),
                                 dropdownColor: colorFromHex(sequenceBtnsColor),
-                                items: providedClubs.sequenceNames.map((item) {
+                                items: globalState.sequenceNames.map((item) {
                                   return DropdownMenuItem(
                                       value: item,
                                       child: Text(
@@ -157,8 +175,8 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 ).toList(),
                                 onChanged: (newValue){
                                   setState(() {
-                                    providedClubs.dropdownValue = newValue;
-                                    providedClubs.loadSequenceOnSelectedClubs(newValue);
+                                    globalState.dropdownValue = newValue;
+                                    globalState.loadSequenceOnSelectedClubs(newValue);
                                   });
                                 },
                               ),
@@ -186,10 +204,10 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     fontSize: 25,
                                     color: Colors.white
                                 ),
-                                value: providedClubs.startMinute,
+                                value: globalState.startMinute,
                                 minValue: -59,
                                 maxValue: 59,
-                                onChanged: (value) => setState(() => providedClubs.startMinute = value),
+                                onChanged: (value) => setState(() => globalState.startMinute = value),
                               ),
                             ],
                           ),
@@ -215,10 +233,10 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     fontSize: 25,
                                     color: Colors.white
                                 ),
-                                value: providedClubs.startSecond,
+                                value: globalState.startSecond,
                                 minValue: -59,
                                 maxValue: 59,
-                                onChanged: (value) => setState(() => providedClubs.startSecond = value),
+                                onChanged: (value) => setState(() => globalState.startSecond = value),
                               ),
                             ],
                           ),
@@ -231,10 +249,19 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 Container(
                                   width: controlBtnsWidth,
                                   height: controlBtnsHeight,
-                                  color: colorFromHex(sequenceBtnsColor),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: RadialGradient(
+                                      radius: 1.2,
+                                      colors: [
+                                        colorFromHex(btnGradient1),
+                                        colorFromHex(btnGradient2),
+                                      ],
+                                    ),
+                                  ),
                                   child: TextButton(
                                       onPressed: () {
-                                        providedClubs.startSequenceOnSelectedClubs(providedClubs.dropdownValue, getSequenceStartTime());
+                                        globalState.startSequenceOnSelectedClubs(globalState.dropdownValue, getSequenceStartTime());
                                       },
                                       child: Text(
                                         "Start",
@@ -247,10 +274,19 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 Container(
                                   width: controlBtnsWidth,
                                   height: controlBtnsHeight,
-                                  color: colorFromHex(sequenceBtnsColor),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: RadialGradient(
+                                      radius: 1.2,
+                                      colors: [
+                                        colorFromHex(btnGradient1),
+                                        colorFromHex(btnGradient2),
+                                      ],
+                                    ),
+                                  ),
                                   child: TextButton(
                                       onPressed: () {
-                                        providedClubs.stopSequenceOnSelectedClubs();
+                                        globalState.stopSequenceOnSelectedClubs();
                                       },
                                       child: Text(
                                         "Stop",
@@ -269,11 +305,20 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 Container(
                                   width: controlBtnsWidth,
                                   height: controlBtnsHeight,
-                                  color: colorFromHex(sequenceBtnsColor),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: RadialGradient(
+                                      radius: 1.2,
+                                      colors: [
+                                        colorFromHex(btnGradient1),
+                                        colorFromHex(btnGradient2),
+                                      ],
+                                    ),
+                                  ),
                                   child: TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          providedClubs.pauseSequenceOnSelectedClubs();
+                                          globalState.pauseSequenceOnSelectedClubs();
                                         });
                                       },
                                       child: Text(
@@ -287,11 +332,20 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 Container(
                                   width: controlBtnsWidth,
                                   height: controlBtnsHeight,
-                                  color: colorFromHex(sequenceBtnsColor),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: RadialGradient(
+                                      radius: 1.2,
+                                      colors: [
+                                        colorFromHex(btnGradient1),
+                                        colorFromHex(btnGradient2),
+                                      ],
+                                    ),
+                                  ),
                                   child: TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          providedClubs.resumeSequenceOnSelectedClubs();
+                                          globalState.resumeSequenceOnSelectedClubs();
                                         });
                                       },
                                       child: Text(
@@ -306,7 +360,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                                providedClubs.sequenceInfo,
+                                globalState.sequenceInfo,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15

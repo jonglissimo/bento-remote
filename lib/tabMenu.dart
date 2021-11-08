@@ -18,17 +18,33 @@ class _TabBarMenuState extends State<TabBarMenu> {
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(
-      builder: (context, providedClubs, child) {
+      builder: (context, globalState, child) {
 
       double screenWidth = MediaQuery.of(context).size.width;
       double tabSectionWidth = screenWidth * 0.7;
+
+      List<double> getTabTextSizes() {
+        List<double> tabTextSizes = [];
+        globalState.currentTabSelection.forEach((selection) {
+          if (selection == true) {
+            tabTextSizes.add(13.0);
+          } else {
+            tabTextSizes.add(12.0);
+          }
+        });
+
+        return tabTextSizes;
+      }
+
+      List<double> tabTextSizes = getTabTextSizes();
 
       return Column(
         children: [
           Container(
             width: tabSectionWidth,
+            color: colorFromHex(detectPropsBtnColor),
             child: ToggleButtons(
-              fillColor: colorFromHex(detectPropsBgColor),
+              fillColor: colorFromHex(propListBgColor),
               color: Colors.white,
               selectedColor: Colors.white,
               renderBorder: false,
@@ -45,12 +61,12 @@ class _TabBarMenuState extends State<TabBarMenu> {
                     ),
                   ),
                   alignment: Alignment.center,
-                  width: tabSectionWidth / providedClubs.currentTabSelection.length,
+                  width: tabSectionWidth / globalState.currentTabSelection.length,
                   height: 45,
                   child: Text(
                     "Color",
                     style: TextStyle(
-                      fontSize: 12
+                      fontSize: tabTextSizes[0],
                     )
                   ),
                 ),
@@ -66,12 +82,12 @@ class _TabBarMenuState extends State<TabBarMenu> {
                     ),
                   ),
                   alignment: Alignment.center,
-                  width: tabSectionWidth / providedClubs.currentTabSelection.length,
+                  width: tabSectionWidth / globalState.currentTabSelection.length,
                   height: 45,
                   child: Text(
                       "Sequence",
                       style: TextStyle(
-                          fontSize: 12
+                          fontSize: tabTextSizes[1]
                       )
                   ),
                 ),
@@ -87,19 +103,19 @@ class _TabBarMenuState extends State<TabBarMenu> {
                     ),
                   ),
                   alignment: Alignment.center,
-                  width: tabSectionWidth / providedClubs.currentTabSelection.length,
+                  width: tabSectionWidth / globalState.currentTabSelection.length,
                   height: 45,
                   child: Text(
                       "Settings",
                       style: TextStyle(
-                          fontSize: 12
+                          fontSize: tabTextSizes[2]
                       )
                   ),
                 ),
               ],
-              isSelected: providedClubs.currentTabSelection,
+              isSelected: globalState.currentTabSelection,
               onPressed: (int index) {
-                providedClubs.changeCurrentTabSelection(index);
+                globalState.changeCurrentTabSelection(index);
               },
             ),
           ),

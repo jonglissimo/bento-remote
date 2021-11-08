@@ -32,50 +32,50 @@ class PropListState extends State<PropList> {
     return broadCastIpList.join(".");
   }
 
-  Future setIpAddress(providedClubs) async {
+  Future setIpAddress(globalState) async {
     List<dynamic> networkInterfaces = await NetworkInterface.list();
     List<String> possibleNetworkInterfaces = ["swlan0", "wlan0"];
 
     for (var interface in networkInterfaces) {
       if (possibleNetworkInterfaces.contains(interface.name)) {
         for (var addr in interface.addresses) {
-          providedClubs.setIpAddress(addr.address);
+          globalState.setIpAddress(addr.address);
           return;
         }
       }
     }
 
-    if (providedClubs.myIpAddress == "" || providedClubs.myIpAddress== null) { // set ip of first interface, as default
-      providedClubs.setIpAddress(networkInterfaces[0][0].address);
+    if (globalState.myIpAddress == "" || globalState.myIpAddress== null) { // set ip of first interface, as default
+      globalState.setIpAddress(networkInterfaces[0][0].address);
     }
 
   }
 
-  Future refreshBroadcastSocket(providedClubs) async {
-    await this.setIpAddress(providedClubs);
-    this.broadCastIpAddress = getBroadcastIp(providedClubs.myIpAddress);
+  Future refreshBroadcastSocket(globalState) async {
+    await this.setIpAddress(globalState);
+    this.broadCastIpAddress = getBroadcastIp(globalState.myIpAddress);
     oscHandlerBroadcast.remoteHostIp = this.broadCastIpAddress;
   }
 
-  Future setBroadcastSocket(onOscReceived, providedClubs) async {
-    await this.setIpAddress(providedClubs);
-    this.broadCastIpAddress = getBroadcastIp(providedClubs.myIpAddress);
+  Future setBroadcastSocket(onOscReceived, globalState) async {
+    await this.setIpAddress(globalState);
+    this.broadCastIpAddress = getBroadcastIp(globalState.myIpAddress);
     oscHandlerBroadcast = OSCHandler(remotePort: 9000, remoteHostIp: this.broadCastIpAddress, onMsgReceived: onOscReceived);
   }
 
-  void BroadcastToProps(onOscReceived, providedClubs) async {
+  void BroadcastToProps(onOscReceived, globalState) async {
     try {
-      if (providedClubs.myIpAddress == "" || providedClubs.myIpAddress == null) {
-        await setBroadcastSocket(onOscReceived, providedClubs);
+      if (globalState.myIpAddress == "" || globalState.myIpAddress == null) {
+        await setBroadcastSocket(onOscReceived, globalState);
         Timer(Duration(milliseconds: 500), () {
-          oscHandlerBroadcast.sendOscMessage("/yo", [providedClubs.myIpAddress]);
+          oscHandlerBroadcast.sendOscMessage("/yo", [globalState.myIpAddress]);
           oscHandlerBroadcast.sendOscMessage("/files/list", []);
           oscHandlerBroadcast.sendOscMessage("/rgb/brightnessStatus", []);
         });
       } else {
         for (int i = 1; i < 10; i++) {
           Timer(Duration(milliseconds: i * 100), () {
-            oscHandlerBroadcast.sendOscMessage("/yo", [providedClubs.myIpAddress]);
+            oscHandlerBroadcast.sendOscMessage("/yo", [globalState.myIpAddress]);
             oscHandlerBroadcast.sendOscMessage("/files/list", []);
             oscHandlerBroadcast.sendOscMessage("/rgb/brightnessStatus", []);
           });
@@ -101,7 +101,7 @@ class PropListState extends State<PropList> {
   Widget build(BuildContext context) {
 
     return Consumer<StateModel>(
-      builder: (context, providedClubs, child) {
+      builder: (context, globalState, child) {
         double screenWidth = MediaQuery.of(context).size.width;
         double screenHeight = MediaQuery.of(context).size.height;
         double topAreaHeight = screenHeight * 0.80;
@@ -117,7 +117,7 @@ class PropListState extends State<PropList> {
             String propIpAddress = msg.arguments[0];
             String propMacAddress = msg.arguments[1];
             Provider.of<StateModel>(context, listen: false).addPropInfosToList(propMacAddress, propIpAddress);
-            providedClubs.createOscHandlersForProps();
+            globalState.createOscHandlersForProps();
           }
 
           if (msg.address == "/battery/level") {
@@ -128,19 +128,19 @@ class PropListState extends State<PropList> {
 
           if (msg.address == "/files/list") {
             List sequenceNames = filterSequenceNamesFromOscArguments(msg.arguments);
-            providedClubs.addSequenceNamesToList(sequenceNames);
+            globalState.addSequenceNamesToList(sequenceNames);
           }
 
           if(msg.address == "/rgb/brightnessStatus") {
             String propMacAddress = msg.arguments[0];
             double propBrightnessLevel = msg.arguments[1];
-            providedClubs.addBrightnessToMap(propMacAddress, propBrightnessLevel);
+            globalState.addBrightnessToMap(propMacAddress, propBrightnessLevel);
           }
 
           print("Received OSC Message - ${msg.address} ${msg.arguments}");
         }
 
-        setBroadcastSocket(onOscReceived, providedClubs); //Init IP Address and set Broadcast Socket
+        setBroadcastSocket(onOscReceived, globalState); //Init IP Address and set Broadcast Socket
 
         return Container(
           height: topAreaHeight,
@@ -151,10 +151,18 @@ class PropListState extends State<PropList> {
              Container(
                width: propListWidth,
                height: detectPropsBtnHeight,
-               color: colorFromHex(detectPropsBtnColor),
+               decoration: BoxDecoration(
+                   // borderRadius: BorderRadius.circular(10),
+                   gradient: RadialGradient(
+                     radius: 1.5,
+                     colors: [
+                       colorFromHex(btnGradient1),
+                       colorFromHex(btnGradient2),
+                     ],)
+               ),
                child: TextButton(
                    onPressed: () {
-                     BroadcastToProps(onOscReceived, providedClubs);
+                     BroadcastToProps(onOscReceived, globalState);
                    },
                    child: Text(
                      "Detect Props",
@@ -179,15 +187,24 @@ class PropListState extends State<PropList> {
              Container(
                width: propListWidth,
                height: selectBtnsHeight,
-               color: colorFromHex(detectPropsBtnColor),
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(10),
+                 gradient: RadialGradient(
+                   radius: 1,
+                   colors: [
+                     colorFromHex(btnGradient1),
+                     colorFromHex(btnGradient2),
+                   ],
+                 ),
+               ),
                child: TextButton(
                    onPressed: () {
-                     providedClubs.selectAllProps();
+                     globalState.selectAllProps();
                    },
                    child: Text(
                      "Select All",
                      style: TextStyle(
-                         color: Colors.white
+                         color: Colors.white,
                      ),
                    )
                ),
@@ -198,10 +215,19 @@ class PropListState extends State<PropList> {
              Container(
                width: propListWidth,
                height: selectBtnsHeight,
-               color: colorFromHex(detectPropsBtnColor),
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(10),
+                 gradient: RadialGradient(
+                   radius: 1,
+                   colors: [
+                     colorFromHex(btnGradient1),
+                     colorFromHex(btnGradient2),
+                   ],
+                 ),
+               ),
                child: TextButton(
                    onPressed: () {
-                     providedClubs.unselectAllProps();
+                     globalState.unselectAllProps();
                    },
                    child: Text(
                      "Unselect All",
@@ -217,10 +243,19 @@ class PropListState extends State<PropList> {
              Container(
                width: propListWidth,
                height: clearPropsBtnHeight,
-               color: colorFromHex(detectPropsBtnColor),
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(10),
+                 gradient: RadialGradient(
+                   radius: 1,
+                   colors: [
+                     colorFromHex(btnGradient1),
+                     colorFromHex(btnGradient2),
+                   ],
+                 ),
+               ),
                child: TextButton(
                    onPressed: () {
-                     providedClubs.resetPropList();
+                     globalState.resetPropList();
                    },
                    child: Text(
                      "Clear Props",
@@ -237,3 +272,32 @@ class PropListState extends State<PropList> {
     );
   }
 }
+
+// RaisedButton(
+// onPressed: () {
+// BroadcastToProps(onOscReceived, globalState);
+// },
+// shape: RoundedRectangleBorder(
+// borderRadius: BorderRadius.circular(90.0)
+// ),
+// child: Ink(
+// decoration: BoxDecoration(
+// gradient: LinearGradient(colors: [colorFromHex(propListBgColor), colorFromHex(detectPropsBtnColor)],
+// begin: Alignment.centerLeft,
+// end: Alignment.centerRight
+// ),
+// borderRadius: BorderRadius.circular(10.0)
+// ),
+// child: Container(
+// constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
+// alignment: Alignment.center,
+// child: Text(
+// "Detect Props",
+// textAlign: TextAlign.center,
+// style: TextStyle(
+// color: Colors.white
+// ),
+// )
+// ),
+// ),
+// ),

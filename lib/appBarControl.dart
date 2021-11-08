@@ -14,7 +14,7 @@ class _AppBarControlState extends State<AppBarControl> {
   @override
   Widget build(BuildContext context) {
     return Consumer<StateModel>(
-        builder: (context, providedClubs, child) {
+        builder: (context, globalState, child) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -26,7 +26,7 @@ class _AppBarControlState extends State<AppBarControl> {
                       child: Row(
                         children: [
                           Text(
-                            "IP Address: ${providedClubs.myIpAddress}",
+                            "IP Address: ${globalState.myIpAddress}",
                             style: TextStyle(
                               fontSize: 12
                             ),
@@ -34,8 +34,8 @@ class _AppBarControlState extends State<AppBarControl> {
                           IconButton(
                               onPressed: () {
                                 setState(() {
-                                  providedClubs.myIpAddress = "";
-                                  providedClubs.propListKey.currentState.refreshBroadcastSocket(providedClubs);
+                                  globalState.myIpAddress = "";
+                                  globalState.propListKey.currentState.refreshBroadcastSocket(globalState);
                                 });
                               },
                               icon: Icon(Icons.refresh)
@@ -50,13 +50,13 @@ class _AppBarControlState extends State<AppBarControl> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        providedClubs.restartSelected();
+                        globalState.restartSelected();
                       },
                       icon: Icon(Icons.restart_alt)
                   ),
                   IconButton(
                       onPressed: () {
-                        providedClubs.shutdownSelected();
+                        globalState.shutdownSelected();
                       },
                       icon: Icon(Icons.power_settings_new)
                   )

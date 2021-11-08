@@ -62,11 +62,11 @@ class _TogglePropState extends State<ToggleProp> {
     double propHeight = 55;
 
     return  Consumer<StateModel>(
-      builder: (context, providedClubs, child) {
+      builder: (context, globalState, child) {
 
       double getIndexFontSize() {
           try {
-            double fontSize = providedClubs.currentPropSelections[this.propIndex - 1] == true ? 16.5 : 13;
+            double fontSize = globalState.currentPropSelections[this.propIndex - 1] == true ? 16.5 : 13;
             return fontSize;
           } catch(e) {
             return 13;
@@ -106,7 +106,7 @@ class _TogglePropState extends State<ToggleProp> {
                           size: 14,
                         ),
                         Text(
-                          providedClubs.getBrightness(this.macAddress).toString(),
+                          globalState.getBrightness(this.macAddress).toString(),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14
@@ -117,12 +117,12 @@ class _TogglePropState extends State<ToggleProp> {
                     Row(
                       children: [
                         Icon(
-                          getBatteryStatusIcon(providedClubs.getBatteryLevel(this.macAddress)),
-                          color: getBatteryStatusColor(providedClubs.getBatteryLevel(this.macAddress)),
+                          getBatteryStatusIcon(globalState.getBatteryLevel(this.macAddress)),
+                          color: getBatteryStatusColor(globalState.getBatteryLevel(this.macAddress)),
                           size: 14,
                         ),
                         Text(
-                          providedClubs.getBatteryLevel(this.macAddress).toString() + "%",
+                          globalState.getBatteryLevel(this.macAddress).toString() + "%",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14

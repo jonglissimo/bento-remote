@@ -9,7 +9,6 @@ import "appBarControl.dart";
 import 'package:wakelock/wakelock.dart';
 
 void main() {
-
   runApp(MaterialApp(
     home: Home(),
   ));
@@ -44,7 +43,7 @@ class _HomeState extends State<Home> {
     return ChangeNotifierProvider(
       create: (context) => StateModel(),
       child: Consumer<StateModel>(
-        builder: (context, providedClubs, child) {
+        builder: (context, globalState, child) {
           return Scaffold(
             appBar: AppBar(
               toolbarHeight: appBarHeight,
@@ -63,7 +62,7 @@ class _HomeState extends State<Home> {
                         Container( //Prop List
                           color: colorFromHex(propListBgColor),
                           width: propListWidth,
-                          child: PropList(key: providedClubs.propListKey),
+                          child: PropList(key: globalState.propListKey),
                         ),
                         Container( // Tab Section
                           color: colorFromHex(mainBgColor),
@@ -77,7 +76,7 @@ class _HomeState extends State<Home> {
                   Container( //Bottom Area
                       height: bottomAreaHeight,
                       width: screenWidth,
-                      child: providedClubs.musicPlayerGlobal
+                      child: globalState.musicPlayerGlobal
                   )
                 ],
               ),

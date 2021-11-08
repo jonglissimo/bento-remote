@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import "colorFromHex.dart";
 import 'stateModel.dart';
 
-class ChooseColor extends StatefulWidget {
-  const ChooseColor({Key key}) : super(key: key);
+class ChooseColorSection extends StatefulWidget {
+  const ChooseColorSection({Key key}) : super(key: key);
 
   @override
   _ChooseColorState createState() => _ChooseColorState();
 }
 
-class _ChooseColorState extends State<ChooseColor> {
+class _ChooseColorState extends State<ChooseColorSection> {
 
   Color pickerColor = Color(0xff443a49);
 
@@ -24,7 +24,7 @@ class _ChooseColorState extends State<ChooseColor> {
   Widget build(BuildContext context) {
 
     return Consumer<StateModel>(
-        builder: (context, providedClubs, child) {
+        builder: (context, globalState, child) {
 
           double screenWidth = MediaQuery.of(context).size.width;
           double screenHeight = MediaQuery.of(context).size.height;
@@ -43,7 +43,7 @@ class _ChooseColorState extends State<ChooseColor> {
               double red = color.red / 255.0;
               double green = color.green / 255.0;
               double blue = color.blue / 255.0;
-              providedClubs.changeColorOfSelected(red, green, blue);
+              globalState.changeColorOfSelected(red, green, blue);
             });
           }
 

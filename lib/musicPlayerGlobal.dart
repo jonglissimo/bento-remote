@@ -166,9 +166,9 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
                       ),
                       GestureDetector(
                         child: Icon(
-                          Icons.stop_rounded,
+                          Icons.stop_circle_outlined,
                           color: colorFromHex(playPauseButtonColor),
-                          size: screenWidth * 0.5 * 0.25,
+                          size: screenWidth * 0.4 * 0.25,
                         ),
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
@@ -191,7 +191,15 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
                   child: Column(
                     children: [
                       Container(
-                        color: colorFromHex(chooseFileBgColor),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: RadialGradient(
+                              radius: 1.5,
+                              colors: [
+                                colorFromHex(btnGradient1),
+                                colorFromHex(btnGradient2),
+                              ],)
+                        ),
                         width: screenWidth * 0.4,
                         height: bottomAreaHeight * 0.3,
                         child: TextButton(
