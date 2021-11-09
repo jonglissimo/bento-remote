@@ -137,6 +137,11 @@ class PropListState extends State<PropList> {
             globalState.addBrightnessToMap(propMacAddress, propBrightnessLevel);
           }
 
+          if(msg.address == "/pong") {
+            String propMacAddress = msg.arguments[0];
+            globalState.updatePongTimeAtMacAddress(propMacAddress);
+          }
+
           print("Received OSC Message - ${msg.address} ${msg.arguments}");
         }
 
@@ -152,7 +157,6 @@ class PropListState extends State<PropList> {
                width: propListWidth,
                height: detectPropsBtnHeight,
                decoration: BoxDecoration(
-                   // borderRadius: BorderRadius.circular(10),
                    gradient: RadialGradient(
                      radius: 1.5,
                      colors: [
@@ -163,6 +167,27 @@ class PropListState extends State<PropList> {
                child: TextButton(
                    onPressed: () {
                      BroadcastToProps(onOscReceived, globalState);
+
+                     //send ping every 1 seconds
+                     if (!globalState.pingPongStarted) {
+                       Timer.periodic(new Duration(seconds: 1), (timer) {
+                         globalState.sendPingToAllClubs();
+
+                         double currentTimeInSeconds = DateTime.now().microsecondsSinceEpoch.toDouble() / 1000000;
+                         globalState.pongTimes.forEach((macAddress, time) {
+
+                           double timeSinceLastPong = currentTimeInSeconds - globalState.pongTimes[macAddress];
+
+                           if (timeSinceLastPong > 3) { //check if last pong was more than 3 seconds ago
+                             globalState.updateConnectedProps(macAddress, false);
+                           } else {
+                             globalState.updateConnectedProps(macAddress, true);
+                           }
+                         });
+
+                       });
+                       globalState.pingPongStarted = true;
+                     }
                    },
                    child: Text(
                      "Detect Props",

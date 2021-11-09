@@ -22,30 +22,6 @@ class _TogglePropState extends State<ToggleProp> {
 
   _TogglePropState({ this.macAddress, this.propIndex });
 
-  Color getBatteryStatusColor(int batteryStatus) {
-    if (batteryStatus > 90) {
-      return colorFromHex("#00ff00");
-    } else if (batteryStatus > 80){
-      return colorFromHex("#00ff00");
-    } else if (batteryStatus > 70){
-      return colorFromHex("#98db00");
-    } else if (batteryStatus > 60){
-      return colorFromHex("#b6c700");
-    } else if (batteryStatus > 50){
-      return colorFromHex("#cdb200");
-    } else if (batteryStatus > 40){
-      return colorFromHex("#df9b00");
-    } else if (batteryStatus > 30){
-      return colorFromHex("#ee8200");
-    } else if (batteryStatus > 20){
-      return colorFromHex("#f86600");
-    } else if (batteryStatus > 10){
-      return colorFromHex("#fe4400");
-    } else {
-      return colorFromHex("#ff0000");
-    }
-  }
-
   IconData getBatteryStatusIcon(int batteryStatus) {
     if (batteryStatus > 20) {
       return Icons.battery_full;
@@ -64,6 +40,47 @@ class _TogglePropState extends State<ToggleProp> {
     return  Consumer<StateModel>(
       builder: (context, globalState, child) {
 
+      Color getBatteryStatusColor(int batteryStatus) {
+
+        if (globalState.connectedProps.containsKey(this.macAddress)) {
+          if (globalState.connectedProps[this.macAddress] == false) {
+            return Colors.grey;
+          }
+        }
+
+        if (batteryStatus > 90) {
+          return colorFromHex("#00ff00");
+        } else if (batteryStatus > 80){
+          return colorFromHex("#00ff00");
+        } else if (batteryStatus > 70){
+          return colorFromHex("#98db00");
+        } else if (batteryStatus > 60){
+          return colorFromHex("#b6c700");
+        } else if (batteryStatus > 50){
+          return colorFromHex("#cdb200");
+        } else if (batteryStatus > 40){
+          return colorFromHex("#df9b00");
+        } else if (batteryStatus > 30){
+          return colorFromHex("#ee8200");
+        } else if (batteryStatus > 20){
+          return colorFromHex("#f86600");
+        } else if (batteryStatus > 10){
+          return colorFromHex("#fe4400");
+        } else {
+          return colorFromHex("#ff0000");
+        }
+
+        // if (globalState.connectedProps.containsKey(this.macAddress)) {
+        //   if (globalState.connectedProps[this.macAddress]) {
+        //
+        //   } else {
+        //     return Colors.grey;
+        //   }
+        // } else {
+        //   return colorFromHex("#00ff00");
+        // }
+      }
+
       double getIndexFontSize() {
           try {
             double fontSize = globalState.currentPropSelections[this.propIndex - 1] == true ? 16.5 : 13;
@@ -71,6 +88,42 @@ class _TogglePropState extends State<ToggleProp> {
           } catch(e) {
             return 13;
           }
+      }
+
+      Color getIndexColor() {
+        if (globalState.connectedProps.containsKey(this.macAddress)) {
+          if (globalState.connectedProps[this.macAddress]) {
+            return Colors.white;
+          } else {
+            return Colors.red;
+          }
+        } else {
+          return Colors.white;
+        }
+      }
+
+      Color getInfoColor() {
+        if (globalState.connectedProps.containsKey(this.macAddress)) {
+          if (globalState.connectedProps[this.macAddress]) {
+            return Colors.white;
+          } else {
+            return Colors.grey;
+          }
+        } else {
+          return Colors.white;
+        }
+      }
+
+      Color getLightbulbColor() {
+        if (globalState.connectedProps.containsKey(this.macAddress)) {
+          if (globalState.connectedProps[this.macAddress]) {
+            return Colors.amber;
+          } else {
+            return Colors.grey;
+          }
+        } else {
+          return Colors.amber;
+        }
       }
 
       return Container(
@@ -92,7 +145,7 @@ class _TogglePropState extends State<ToggleProp> {
                 Text(this.propIndex.toString(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: getIndexColor(),
                     fontSize: getIndexFontSize(),
                   ),
                 ),
@@ -102,13 +155,13 @@ class _TogglePropState extends State<ToggleProp> {
                       children: [
                         Icon(
                           Icons.lightbulb,
-                          color: Colors.amber,
+                          color: getLightbulbColor(),
                           size: 14,
                         ),
                         Text(
                           globalState.getBrightness(this.macAddress).toString(),
                           style: TextStyle(
-                              color: Colors.white,
+                              color: getInfoColor(),
                               fontSize: 14
                           ),
                         ),
@@ -124,8 +177,8 @@ class _TogglePropState extends State<ToggleProp> {
                         Text(
                           globalState.getBatteryLevel(this.macAddress).toString() + "%",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14
+                            color: getInfoColor(),
+                            fontSize: 14,
                           ),
                         ),
                       ],

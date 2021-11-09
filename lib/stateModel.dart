@@ -9,6 +9,9 @@ final playerKey = GlobalKey<MusicPlayerGlobalState>();
 class StateModel extends ChangeNotifier {
 
  Map<String, String> propInfoMap = Map(); //Map key = Mac Address, value = IP Address
+ Map<String, double> pongTimes = Map(); // Pong responding times with Mac Addresses
+ Map<String, bool> connectedProps = Map(); // keeps track of whether or not a prop is connected
+
  List<bool> currentPropSelections = [];
  List<OSCHandler> oscHandlerProps = [];
  List<bool> currentTabSelection = [true, false, false];
@@ -27,6 +30,7 @@ class StateModel extends ChangeNotifier {
  String sequenceInfo = "";
  double brightnessValue = 1;
  double irBrightnessValue = 0;
+ bool pingPongStarted = false;
 
  void changeColorOfSelected(red, green, blue) {
    for (int i = 0; i < oscHandlerProps.length; i++) {
@@ -208,14 +212,30 @@ class StateModel extends ChangeNotifier {
    notifyListeners();
  }
 
+ void sendPingToAllClubs() {
+   for (int i = 0; i < oscHandlerProps.length; i++) {
+     oscHandlerProps[i].sendOscMessage("/ping", []);
+   }
+ }
+
+ void updatePongTimeAtMacAddress(macAddress) {
+   double timeInSeconds = DateTime.now().microsecondsSinceEpoch.toDouble() / 1000000;
+   pongTimes[macAddress] = timeInSeconds;
+ }
+
+ void updateConnectedProps(macAddress, isConnected) {
+   connectedProps[macAddress] = isConnected;
+   notifyListeners();
+ }
+
  void stopSequenceOnSelectedClubs() {
    for (int i = 0; i < oscHandlerProps.length; i++) {
      if (currentPropSelections.length > 0) {
        if (currentPropSelections[i] == true) {
          oscHandlerProps[i].sendOscMessage("/player/stop", []);
        }
-     }
    }
+ }
 
    //Stop music player
    if (syncToMusic) {
