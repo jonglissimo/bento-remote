@@ -4,6 +4,7 @@ import "stateModel.dart";
 import 'chooseColorSection.dart';
 import "sequenceSection.dart";
 import 'settingsSection.dart';
+import 'scriptSection.dart';
 
 class TabContent extends StatefulWidget {
   const TabContent({Key key}) : super(key: key);
@@ -32,6 +33,8 @@ class _TabContentState extends State<TabContent> {
           case 1:
             return SequenceSection();
           case 2:
+            return ScriptSection();
+          case 3:
             return SettingsSection();
         }
 

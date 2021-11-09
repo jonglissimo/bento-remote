@@ -73,7 +73,7 @@ class PropListState extends State<PropList> {
           oscHandlerBroadcast.sendOscMessage("/rgb/brightnessStatus", []);
         });
       } else {
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 7; i++) {
           Timer(Duration(milliseconds: i * 100), () {
             oscHandlerBroadcast.sendOscMessage("/yo", [globalState.myIpAddress]);
             oscHandlerBroadcast.sendOscMessage("/files/list", []);
@@ -94,7 +94,26 @@ class PropListState extends State<PropList> {
         sequences.add(sequenceName.replaceAll(' ', ''));
       }
     }
+
+    if (sequences.length > 0) {
+      sequences.insert(0, "");
+    }
+
     return sequences;
+  }
+
+  List <String> filterScriptNamesFromOscArguments(oscArguments) {
+    String scriptsOneString = oscArguments[1];
+    List sequencesList = scriptsOneString.split(",");
+    List <String> scripts = [];
+    for (String arg in sequencesList) {
+      if (arg.contains(".wasm")) {
+        String sequenceName = arg.split(".wasm")[0];
+        scripts.add(sequenceName.replaceAll(' ', ''));
+      }
+    }
+
+    return scripts;
   }
 
   @override
@@ -128,7 +147,9 @@ class PropListState extends State<PropList> {
 
           if (msg.address == "/files/list") {
             List sequenceNames = filterSequenceNamesFromOscArguments(msg.arguments);
+            List scriptNames = filterScriptNamesFromOscArguments(msg.arguments);
             globalState.addSequenceNamesToList(sequenceNames);
+            globalState.addScriptNamesToList(scriptNames);
           }
 
           if(msg.address == "/rgb/brightnessStatus") {
@@ -170,6 +191,8 @@ class PropListState extends State<PropList> {
 
                      //send ping every 1 seconds
                      if (!globalState.pingPongStarted) {
+
+                       globalState.sendPingToAllClubs();
                        Timer.periodic(new Duration(seconds: 1), (timer) {
                          globalState.sendPingToAllClubs();
 
@@ -183,6 +206,7 @@ class PropListState extends State<PropList> {
                            } else {
                              globalState.updateConnectedProps(macAddress, true);
                            }
+
                          });
 
                        });

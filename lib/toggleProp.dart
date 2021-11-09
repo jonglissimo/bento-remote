@@ -70,15 +70,6 @@ class _TogglePropState extends State<ToggleProp> {
           return colorFromHex("#ff0000");
         }
 
-        // if (globalState.connectedProps.containsKey(this.macAddress)) {
-        //   if (globalState.connectedProps[this.macAddress]) {
-        //
-        //   } else {
-        //     return Colors.grey;
-        //   }
-        // } else {
-        //   return colorFromHex("#00ff00");
-        // }
       }
 
       double getIndexFontSize() {

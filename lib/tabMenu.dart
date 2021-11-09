@@ -106,12 +106,33 @@ class _TabBarMenuState extends State<TabBarMenu> {
                   width: tabSectionWidth / globalState.currentTabSelection.length,
                   height: 45,
                   child: Text(
-                      "Settings",
+                      "Script",
                       style: TextStyle(
                           fontSize: tabTextSizes[2]
                       )
                   ),
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        left: BorderSide(
+                            color: Colors.white
+                        ),
+                        right: BorderSide(
+                            color: Colors.white
+                        )
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  width: tabSectionWidth / globalState.currentTabSelection.length,
+                  height: 45,
+                  child: Text(
+                      "Settings",
+                      style: TextStyle(
+                          fontSize: tabTextSizes[3]
+                      )
+                  ),
+                )
               ],
               isSelected: globalState.currentTabSelection,
               onPressed: (int index) {
