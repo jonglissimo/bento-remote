@@ -14,12 +14,14 @@ class StateModel extends ChangeNotifier {
 
  List<bool> currentPropSelections = [];
  List<OSCHandler> oscHandlerProps = [];
- List<bool> currentTabSelection = [true, false, false];
+ List<bool> currentTabSelection = [true, false, false, false];
  String myIpAddress = "";
  Map<String, double> propBatteryLevelsMap = Map();
  Map<String, double> propBrightnessValuesMap = Map();
  List<String> sequenceNames = [];
- String dropdownValue = "";
+ List<String> scriptNames = [];
+ String dropdownValueSequence = "";
+ String dropdownValueScript = "";
  MusicPlayerGlobal musicPlayerGlobal = MusicPlayerGlobal(key: playerKey);
  bool syncToMusic = true;
  int startMinute = 0;
@@ -28,6 +30,7 @@ class StateModel extends ChangeNotifier {
  Timer startingTimer;
  Timer infoTimer;
  String sequenceInfo = "";
+ String scriptInfo = "";
  double brightnessValue = 1;
  double irBrightnessValue = 0;
  bool pingPongStarted = false;
@@ -91,6 +94,9 @@ class StateModel extends ChangeNotifier {
  }
 
  void loadSequenceOnSelectedClubs(sequenceName) {
+
+   if (sequenceName == "") return;
+
    for (int i = 0; i < oscHandlerProps.length; i++) {
      if (currentPropSelections.length > 0) {
        if (currentPropSelections[i] == true) {
@@ -99,6 +105,20 @@ class StateModel extends ChangeNotifier {
      }
    }
    print("Loaded Sequence '${sequenceName}' On Selected Clubs");
+   notifyListeners();
+ }
+
+ void loadScriptOnSelectedClubs(scriptName) {
+   for (int i = 0; i < oscHandlerProps.length; i++) {
+     if (currentPropSelections.length > 0) {
+       if (currentPropSelections[i] == true) {
+         oscHandlerProps[i].sendOscMessage("/scripts/load", [scriptName]);
+       }
+     }
+   }
+
+   print("Loaded Script '${scriptName}' On Selected Clubs");
+   changeScriptInfo("Started");
    notifyListeners();
  }
 
@@ -114,11 +134,25 @@ class StateModel extends ChangeNotifier {
    });
  }
 
+ void changeScriptInfo(info) {
+   try {
+     infoTimer.cancel();
+   } catch (e) {}
+
+   scriptInfo = info;
+   infoTimer = Timer(Duration(milliseconds: 3000), () {
+     scriptInfo = "";
+     notifyListeners();
+   });
+ }
+
  int getMusicDelay() {
      return ((startMinute * 60) + startSecond) * 1000;
  }
 
  void startSequenceOnSelectedClubs(sequenceName, startTimeInSeconds) {
+
+   if (sequenceName == "") return;
 
    //Start music at starting time
    if (syncToMusic) {
@@ -234,9 +268,8 @@ class StateModel extends ChangeNotifier {
        if (currentPropSelections[i] == true) {
          oscHandlerProps[i].sendOscMessage("/player/stop", []);
        }
-   }
- }
-
+     }
+  }
    //Stop music player
    if (syncToMusic) {
      try {
@@ -250,50 +283,40 @@ class StateModel extends ChangeNotifier {
    notifyListeners();
  }
 
+ void stopScriptOnSelectedClubs() {
+   for (int i = 0; i < oscHandlerProps.length; i++) {
+     if (currentPropSelections.length > 0) {
+       if (currentPropSelections[i] == true) {
+         oscHandlerProps[i].sendOscMessage("/scripts/stop", []);
+       }
+     }
+   }
+
+   print("Stoped Script On Selected Clubs");
+   changeScriptInfo("Stoped");
+   notifyListeners();
+ }
+
  void shutdownSelected() {
-   List<int> oscHandlerIndicesToDelete = [];
    for (int i = 0; i < oscHandlerProps.length; i++) {
      if (currentPropSelections.length > 0) {
        if (currentPropSelections[i] == true) {
          oscHandlerProps[i].sendOscMessage("/root/sleep", []);
-         // oscHandlerIndicesToDelete.add(i);
        }
      }
    }
 
-   //Re-Create prop list after shutting down selected props
-   // for (int index in oscHandlerIndicesToDelete.reversed) {
-   //   oscHandlerProps.removeAt(index);
-   // }
-   // propInfoMap = Map(); //Map key = Mac Address, value = IP Address
-   // currentPropSelections = [];
-   // for (int i = 0; i < oscHandlerProps.length; i++) {
-   //   oscHandlerProps[i].sendOscMessage("/yo", [myIpAddress]);
-   // }
    notifyListeners();
  }
 
  void restartSelected() {
-   List<int> oscHandlerIndicesToDelete = [];
    for (int i = 0; i < oscHandlerProps.length; i++) {
      if (currentPropSelections.length > 0) {
        if (currentPropSelections[i] == true) {
          oscHandlerProps[i].sendOscMessage("/root/restart", []);
-         // oscHandlerIndicesToDelete.add(i);
        }
      }
    }
-
-   //Re-Create prop list after shutting down selected props
-   // for (int index in oscHandlerIndicesToDelete.reversed) {
-   //   oscHandlerProps.removeAt(index);
-   // }
-   // propInfoMap = Map(); //Map key = Mac Address, value = IP Address
-   // propBrightnessValuesMap = Map();
-   // currentPropSelections = [];
-   // for (int i = 0; i < oscHandlerProps.length; i++) {
-   //   oscHandlerProps[i].sendOscMessage("/yo", [myIpAddress]);
-   // }
    notifyListeners();
  }
 
@@ -315,11 +338,6 @@ class StateModel extends ChangeNotifier {
  void addPropInfosToList(macAddress, ipAddress) {
   propInfoMap[macAddress] = ipAddress;
   currentPropSelections = List.generate(propInfoMap.length, (index) => true);
-  // createOscHandlersForProps();
-
-  // if (!propBatteryLevelsMap.containsKey(macAddress)) {
-  //   propBrightnessValuesMap[macAddress] = 100;
-  // }
 
   notifyListeners();
  }
@@ -327,15 +345,26 @@ class StateModel extends ChangeNotifier {
  void addSequenceNamesToList(newSequenceNames) {
    try {
      sequenceNames = (sequenceNames + newSequenceNames).toSet().toList();
-     dropdownValue = sequenceNames[0];
-     loadSequenceOnSelectedClubs(dropdownValue);
+     dropdownValueSequence = sequenceNames[0];
+     // loadSequenceOnSelectedClubs(dropdownValueSequence);
+     notifyListeners();
+   } catch (e) {}
+ }
+
+ void addScriptNamesToList(newScriptNames) {
+   try {
+     scriptNames = (scriptNames + newScriptNames).toSet().toList();
+     dropdownValueScript = scriptNames[0];
+     // loadScriptOnSelectedClubs(dropdownValueScript);
      notifyListeners();
    } catch (e) {}
  }
 
  void resetSequenceList() {
    sequenceNames = [];
-   dropdownValue = "";
+   dropdownValueSequence = "";
+   scriptNames = [];
+   dropdownValueScript = "";
    notifyListeners();
  }
 
@@ -354,6 +383,8 @@ class StateModel extends ChangeNotifier {
    currentPropSelections = [];
    oscHandlerProps = [];
    propBrightnessValuesMap = Map();
+   connectedProps.clear();
+   pongTimes.clear();
    resetSequenceList();
    notifyListeners();
  }

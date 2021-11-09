@@ -152,7 +152,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                             Container(
                               width: tabSectionWidth * 0.6,
                               child: DropdownButton(
-                                value: globalState.dropdownValue,
+                                value: globalState.dropdownValueSequence,
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 hint: Text(
                                   "No Sequences",
@@ -175,7 +175,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                                 ).toList(),
                                 onChanged: (newValue){
                                   setState(() {
-                                    globalState.dropdownValue = newValue;
+                                    globalState.dropdownValueSequence = newValue;
                                     globalState.loadSequenceOnSelectedClubs(newValue);
                                   });
                                 },
@@ -261,7 +261,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   ),
                                   child: TextButton(
                                       onPressed: () {
-                                        globalState.startSequenceOnSelectedClubs(globalState.dropdownValue, getSequenceStartTime());
+                                        globalState.startSequenceOnSelectedClubs(globalState.dropdownValueSequence, getSequenceStartTime());
                                       },
                                       child: Text(
                                         "Start",
