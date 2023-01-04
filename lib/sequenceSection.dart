@@ -39,26 +39,47 @@ class _SequenceSectionState extends State<SequenceSection> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
                               child: Text(
-                                "Sync To Music",
+                                "Sequence",
                                 style: TextStyle(
                                     color: Colors.white
                                 ),
                               ),
                             ),
-                            Theme(
-                              data: ThemeData(unselectedWidgetColor: Colors.white),
-                              child: Checkbox(
-                                  value: globalState.syncToMusic,
-                                  activeColor: Colors.grey,
-                                  onChanged:(newValue){
-                                    setState(() {
-                                      globalState.syncToMusic = newValue;
-                                    });
-                                  }
+                            Container(
+                              width: tabSectionWidth * 0.6,
+                              child: DropdownButton(
+                                value: globalState.dropdownValueSequence,
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                hint: Text(
+                                  "No Sequences",
+                                  style: TextStyle(
+                                      color: Colors.grey
+                                  ),
+                                ),
+                                dropdownColor: getColorFromHex(sequenceBtnsColor),
+                                items: globalState.sequenceNames.map((item) {
+                                  return DropdownMenuItem(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),
+                                      )
+                                  );
+                                }
+                                ).toList(),
+                                onChanged: (newValue){
+                                  setState(() {
+                                    globalState.dropdownValueSequence = newValue;
+                                    globalState.loadSequenceOnSelectedClubs(newValue);
+                                  });
+                                },
                               ),
                             ),
                           ],
@@ -133,52 +154,6 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                              child: Text(
-                                "Sequence",
-                                style: TextStyle(
-                                  color: Colors.white
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: tabSectionWidth * 0.6,
-                              child: DropdownButton(
-                                value: globalState.dropdownValueSequence,
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                hint: Text(
-                                  "No Sequences",
-                                  style: TextStyle(
-                                    color: Colors.grey
-                                  ),
-                                ),
-                                dropdownColor: getColorFromHex(sequenceBtnsColor),
-                                items: globalState.sequenceNames.map((item) {
-                                  return DropdownMenuItem(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(
-                                            color: Colors.white
-                                        ),
-                                      )
-                                  );
-                                }
-                                ).toList(),
-                                onChanged: (newValue){
-                                  setState(() {
-                                    globalState.dropdownValueSequence = newValue;
-                                    globalState.loadSequenceOnSelectedClubs(newValue);
-                                  });
-                                },
                               ),
                             ),
                           ],
@@ -373,7 +348,33 @@ class _SequenceSectionState extends State<SequenceSection> {
                       ],
                     ),
                   ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(3.0, 0, 0, 0),
+                        child: Text(
+                          "Sync To Music",
+                          style: TextStyle(
+                              color: Colors.white
+                          ),
+                        ),
+                      ),
+                      Theme(
+                        data: ThemeData(unselectedWidgetColor: Colors.white),
+                        child: Checkbox(
+                            value: globalState.syncToMusic,
+                            activeColor: Colors.grey,
+                            onChanged:(newValue){
+                              setState(() {
+                                globalState.syncToMusic = newValue;
+                              });
+                            }
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
+
               ),
             );
           }

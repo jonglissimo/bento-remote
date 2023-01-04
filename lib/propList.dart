@@ -131,7 +131,6 @@ class PropListState extends State<PropList> {
         double spacerHeight = 2;
 
         void onOscReceived(msg) {
-
           if (msg.address == "/wassup") {
             String propIpAddress = msg.arguments[0];
             String propMacAddress = msg.arguments[1];

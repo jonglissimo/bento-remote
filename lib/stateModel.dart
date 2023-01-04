@@ -97,13 +97,17 @@ class StateModel extends ChangeNotifier {
 
    if (sequenceName == "") return;
 
-   for (int i = 0; i < oscHandlerProps.length; i++) {
-     if (currentPropSelections.length > 0) {
-       if (currentPropSelections[i] == true) {
-         oscHandlerProps[i].sendOscMessage("/player/load", [sequenceName]);
+   int numOfLoadSignals = 3;
+   for (int i = 0; i < numOfLoadSignals; i++) {
+     for (int j = 0; j < oscHandlerProps.length; j++) {
+       if (currentPropSelections.length > 0) {
+         if (currentPropSelections[j] == true) {
+           oscHandlerProps[j].sendOscMessage("/player/load", [sequenceName]);
+         }
        }
      }
    }
+
    print("Loaded Sequence '${sequenceName}' On Selected Clubs");
    notifyListeners();
  }
@@ -190,7 +194,7 @@ class StateModel extends ChangeNotifier {
        for (int j = 0; j < oscHandlerProps.length; j++) {
          if (currentPropSelections.length > 0) {
            if (currentPropSelections[j] == true) {
-             oscHandlerProps[j].sendOscMessage("/player/load", [sequenceName]);
+             // oscHandlerProps[j].sendOscMessage("/player/load", [sequenceName]);
              double newStartTimeInSeconds = startTimeInSeconds + (i / 100); //adds .1 seconds to the starting time in every cycle
              oscHandlerProps[j].sendOscMessage("/player/play", [newStartTimeInSeconds]);
            }
