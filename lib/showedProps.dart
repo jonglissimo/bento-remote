@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'colorFromHex.dart';
+import 'getColorFromHex.dart';
 import 'appColors.dart';
 import "toggleProp.dart";
 import "package:provider/provider.dart";
@@ -23,7 +23,7 @@ class _ShowedPropsState extends State<ShowedProps> {
             child: Container(
               child: ToggleButtons(
                 direction: Axis.vertical,
-                fillColor: colorFromHex(detectPropsBgColor),
+                fillColor: getColorFromHex(detectPropsBgColor),
                 children: globalState.propInfoMap.keys.toList().asMap().entries.map((entry) =>
                     ToggleProp(macAddress: entry.value, propIndex: entry.key + 1)).toList(),
                 isSelected: globalState.currentPropSelections,

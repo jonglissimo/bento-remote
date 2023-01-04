@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import "appColors.dart";
-import "colorFromHex.dart";
+import "getColorFromHex.dart";
 import "OSCHandler.dart";
 import "dart:io";
 import 'dart:async';
@@ -181,8 +181,8 @@ class PropListState extends State<PropList> {
                    gradient: RadialGradient(
                      radius: 1.5,
                      colors: [
-                       colorFromHex(btnGradient1),
-                       colorFromHex(btnGradient2),
+                       getColorFromHex(btnGradient1),
+                       getColorFromHex(btnGradient2),
                      ],)
                ),
                child: TextButton(
@@ -241,8 +241,8 @@ class PropListState extends State<PropList> {
                  gradient: RadialGradient(
                    radius: 1,
                    colors: [
-                     colorFromHex(btnGradient1),
-                     colorFromHex(btnGradient2),
+                     getColorFromHex(btnGradient1),
+                     getColorFromHex(btnGradient2),
                    ],
                  ),
                ),
@@ -269,8 +269,8 @@ class PropListState extends State<PropList> {
                  gradient: RadialGradient(
                    radius: 1,
                    colors: [
-                     colorFromHex(btnGradient1),
-                     colorFromHex(btnGradient2),
+                     getColorFromHex(btnGradient1),
+                     getColorFromHex(btnGradient2),
                    ],
                  ),
                ),
@@ -297,8 +297,8 @@ class PropListState extends State<PropList> {
                  gradient: RadialGradient(
                    radius: 1,
                    colors: [
-                     colorFromHex(btnGradient1),
-                     colorFromHex(btnGradient2),
+                     getColorFromHex(btnGradient1),
+                     getColorFromHex(btnGradient2),
                    ],
                  ),
                ),
@@ -321,32 +321,3 @@ class PropListState extends State<PropList> {
     );
   }
 }
-
-// RaisedButton(
-// onPressed: () {
-// BroadcastToProps(onOscReceived, globalState);
-// },
-// shape: RoundedRectangleBorder(
-// borderRadius: BorderRadius.circular(90.0)
-// ),
-// child: Ink(
-// decoration: BoxDecoration(
-// gradient: LinearGradient(colors: [colorFromHex(propListBgColor), colorFromHex(detectPropsBtnColor)],
-// begin: Alignment.centerLeft,
-// end: Alignment.centerRight
-// ),
-// borderRadius: BorderRadius.circular(10.0)
-// ),
-// child: Container(
-// constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
-// alignment: Alignment.center,
-// child: Text(
-// "Detect Props",
-// textAlign: TextAlign.center,
-// style: TextStyle(
-// color: Colors.white
-// ),
-// )
-// ),
-// ),
-// ),

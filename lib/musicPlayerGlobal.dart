@@ -1,4 +1,4 @@
-import 'colorFromHex.dart';
+import 'getColorFromHex.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:just_audio/just_audio.dart';
@@ -114,7 +114,7 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
     double bottomAreaHeight= screenHeight * 0.20;
 
     return Container(
-      color: colorFromHex(musicPlayerBgColor),
+      color: getColorFromHex(musicPlayerBgColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +156,7 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
                       GestureDetector(
                         child: Icon(
                           isPlaying?Icons.pause_circle_filled_rounded:Icons.play_circle_fill_rounded,
-                          color: colorFromHex(playPauseButtonColor),
+                          color: getColorFromHex(playPauseButtonColor),
                           size: screenWidth * 0.5 * 0.3,
                         ),
                         behavior: HitTestBehavior.translucent,
@@ -167,7 +167,7 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
                       GestureDetector(
                         child: Icon(
                           Icons.stop_circle_outlined,
-                          color: colorFromHex(playPauseButtonColor),
+                          color: getColorFromHex(playPauseButtonColor),
                           size: screenWidth * 0.4 * 0.25,
                         ),
                         behavior: HitTestBehavior.translucent,
@@ -196,8 +196,8 @@ class MusicPlayerGlobalState extends State<MusicPlayerGlobal> {
                             gradient: RadialGradient(
                               radius: 1.5,
                               colors: [
-                                colorFromHex(btnGradient1),
-                                colorFromHex(btnGradient2),
+                                getColorFromHex(btnGradient1),
+                                getColorFromHex(btnGradient2),
                               ],)
                         ),
                         width: screenWidth * 0.4,

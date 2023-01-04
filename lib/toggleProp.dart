@@ -2,7 +2,7 @@ import 'stateModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import "colorFromHex.dart";
+import "getColorFromHex.dart";
 
 class ToggleProp extends StatefulWidget {
 
@@ -49,25 +49,25 @@ class _TogglePropState extends State<ToggleProp> {
         }
 
         if (batteryStatus > 90) {
-          return colorFromHex("#00ff00");
+          return getColorFromHex("#00ff00");
         } else if (batteryStatus > 80){
-          return colorFromHex("#00ff00");
+          return getColorFromHex("#00ff00");
         } else if (batteryStatus > 70){
-          return colorFromHex("#98db00");
+          return getColorFromHex("#98db00");
         } else if (batteryStatus > 60){
-          return colorFromHex("#b6c700");
+          return getColorFromHex("#b6c700");
         } else if (batteryStatus > 50){
-          return colorFromHex("#cdb200");
+          return getColorFromHex("#cdb200");
         } else if (batteryStatus > 40){
-          return colorFromHex("#df9b00");
+          return getColorFromHex("#df9b00");
         } else if (batteryStatus > 30){
-          return colorFromHex("#ee8200");
+          return getColorFromHex("#ee8200");
         } else if (batteryStatus > 20){
-          return colorFromHex("#f86600");
+          return getColorFromHex("#f86600");
         } else if (batteryStatus > 10){
-          return colorFromHex("#fe4400");
+          return getColorFromHex("#fe4400");
         } else {
-          return colorFromHex("#ff0000");
+          return getColorFromHex("#ff0000");
         }
 
       }

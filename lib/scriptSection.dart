@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'stateModel.dart';
 import "package:provider/provider.dart";
-import 'colorFromHex.dart';
+import 'getColorFromHex.dart';
 import 'appColors.dart';
 
 class ScriptSection extends StatefulWidget {
@@ -50,7 +50,7 @@ class _ScriptSectionState extends State<ScriptSection> {
                               color: Colors.grey
                           ),
                         ),
-                        dropdownColor: colorFromHex(sequenceBtnsColor),
+                        dropdownColor: getColorFromHex(sequenceBtnsColor),
                         items: globalState.scriptNames.map((item) {
                           return DropdownMenuItem(
                               value: item,
@@ -84,8 +84,8 @@ class _ScriptSectionState extends State<ScriptSection> {
                         gradient: RadialGradient(
                           radius: 1.2,
                           colors: [
-                            colorFromHex(btnGradient1),
-                            colorFromHex(btnGradient2),
+                            getColorFromHex(btnGradient1),
+                            getColorFromHex(btnGradient2),
                           ],
                         ),
                       ),
@@ -109,8 +109,8 @@ class _ScriptSectionState extends State<ScriptSection> {
                         gradient: RadialGradient(
                           radius: 1.2,
                           colors: [
-                            colorFromHex(btnGradient1),
-                            colorFromHex(btnGradient2),
+                            getColorFromHex(btnGradient1),
+                            getColorFromHex(btnGradient2),
                           ],
                         ),
                       ),

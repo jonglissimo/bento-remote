@@ -184,13 +184,19 @@ class StateModel extends ChangeNotifier {
    }
 
    //Start sequences in props
-   for (int i = 0; i < oscHandlerProps.length; i++) {
-     if (currentPropSelections.length > 0) {
-       if (currentPropSelections[i] == true) {
-         oscHandlerProps[i].sendOscMessage("/player/load", [sequenceName]);
-         oscHandlerProps[i].sendOscMessage("/player/play", [startTimeInSeconds]);
+   int numOfStartingSignals = 3;
+   for (int i = 0; i < numOfStartingSignals; i++) {
+     Timer(Duration(milliseconds: i * 10), () {
+       for (int j = 0; j < oscHandlerProps.length; j++) {
+         if (currentPropSelections.length > 0) {
+           if (currentPropSelections[j] == true) {
+             oscHandlerProps[j].sendOscMessage("/player/load", [sequenceName]);
+             double newStartTimeInSeconds = startTimeInSeconds + (i / 100); //adds .1 seconds to the starting time in every cycle
+             oscHandlerProps[j].sendOscMessage("/player/play", [newStartTimeInSeconds]);
+           }
+         }
        }
-     }
+     });
    }
 
    print("Started Sequence ${sequenceName} On Selected Clubs");

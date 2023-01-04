@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import 'stateModel.dart';
 import "appColors.dart";
-import "colorFromHex.dart";
+import "getColorFromHex.dart";
 import "package:numberpicker/numberpicker.dart";
 
 class SequenceSection extends StatefulWidget {
@@ -87,8 +87,8 @@ class _SequenceSectionState extends State<SequenceSection> {
                                       gradient: RadialGradient(
                                         radius: 1.2,
                                         colors: [
-                                          colorFromHex(btnGradient1),
-                                          colorFromHex(btnGradient2),
+                                          getColorFromHex(btnGradient1),
+                                          getColorFromHex(btnGradient2),
                                         ],
                                       ),
                                     ),
@@ -115,8 +115,8 @@ class _SequenceSectionState extends State<SequenceSection> {
                                       gradient: RadialGradient(
                                         radius: 1.2,
                                         colors: [
-                                          colorFromHex(btnGradient1),
-                                          colorFromHex(btnGradient2),
+                                          getColorFromHex(btnGradient1),
+                                          getColorFromHex(btnGradient2),
                                         ],
                                       ),
                                     ),
@@ -160,7 +160,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     color: Colors.grey
                                   ),
                                 ),
-                                dropdownColor: colorFromHex(sequenceBtnsColor),
+                                dropdownColor: getColorFromHex(sequenceBtnsColor),
                                 items: globalState.sequenceNames.map((item) {
                                   return DropdownMenuItem(
                                       value: item,
@@ -251,13 +251,14 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   height: controlBtnsHeight,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    gradient: RadialGradient(
-                                      radius: 1.2,
-                                      colors: [
-                                        colorFromHex(btnGradient1),
-                                        colorFromHex(btnGradient2),
-                                      ],
-                                    ),
+                                    color: Colors.green
+                                    // gradient: RadialGradient(
+                                    //   radius: 1.2,
+                                    //   colors: [
+                                    //     getColorFromHex(btnGradient1),
+                                    //     Colors.green
+                                    //   ],
+                                    // ),
                                   ),
                                   child: TextButton(
                                       onPressed: () {
@@ -276,13 +277,14 @@ class _SequenceSectionState extends State<SequenceSection> {
                                   height: controlBtnsHeight,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    gradient: RadialGradient(
-                                      radius: 1.2,
-                                      colors: [
-                                        colorFromHex(btnGradient1),
-                                        colorFromHex(btnGradient2),
-                                      ],
-                                    ),
+                                      color: Colors.red
+                                    // gradient: RadialGradient(
+                                    //   radius: 1.2,
+                                    //   colors: [
+                                    //     getColorFromHex(btnGradient1),
+                                    //     Colors.red
+                                    //   ],
+                                    // ),
                                   ),
                                   child: TextButton(
                                       onPressed: () {
@@ -293,7 +295,7 @@ class _SequenceSectionState extends State<SequenceSection> {
                                         style: TextStyle(
                                             color: Colors.white
                                         ),
-                                      )
+                                      ),
                                   ),
                                 ),
                               ],
@@ -310,8 +312,8 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     gradient: RadialGradient(
                                       radius: 1.2,
                                       colors: [
-                                        colorFromHex(btnGradient1),
-                                        colorFromHex(btnGradient2),
+                                        getColorFromHex(btnGradient1),
+                                        getColorFromHex(btnGradient2),
                                       ],
                                     ),
                                   ),
@@ -337,8 +339,8 @@ class _SequenceSectionState extends State<SequenceSection> {
                                     gradient: RadialGradient(
                                       radius: 1.2,
                                       colors: [
-                                        colorFromHex(btnGradient1),
-                                        colorFromHex(btnGradient2),
+                                        getColorFromHex(btnGradient1),
+                                        getColorFromHex(btnGradient2),
                                       ],
                                     ),
                                   ),

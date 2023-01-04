@@ -2,7 +2,7 @@ import 'propList.dart';
 import 'package:flutter/material.dart';
 import "tabMenu.dart";
 import "appColors.dart";
-import 'colorFromHex.dart';
+import 'getColorFromHex.dart';
 import "package:provider/provider.dart";
 import 'stateModel.dart';
 import "appBarControl.dart";
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
             appBar: AppBar(
               toolbarHeight: appBarHeight,
               title: AppBarControl(),
-              backgroundColor: colorFromHex("#363636"),
+              backgroundColor: getColorFromHex("#363636"),
             ),
             body: Container(
               height: screenHeight,
@@ -60,12 +60,12 @@ class _HomeState extends State<Home> {
                     child: Row(
                       children: [
                         Container( //Prop List
-                          color: colorFromHex(propListBgColor),
+                          color: getColorFromHex(propListBgColor),
                           width: propListWidth,
                           child: PropList(key: globalState.propListKey),
                         ),
                         Container( // Tab Section
-                          color: colorFromHex(mainBgColor),
+                          color: getColorFromHex(mainBgColor),
                           height: screenHeight,
                           width: tabSectionWidth,
                           child: TabBarMenu(),

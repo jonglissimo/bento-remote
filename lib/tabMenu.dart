@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import "colorFromHex.dart";
+import "getColorFromHex.dart";
 import 'appColors.dart';
 import "stateModel.dart";
 import "tabContent.dart";
@@ -42,9 +42,9 @@ class _TabBarMenuState extends State<TabBarMenu> {
         children: [
           Container(
             width: tabSectionWidth,
-            color: colorFromHex(detectPropsBtnColor),
+            color: getColorFromHex(detectPropsBtnColor),
             child: ToggleButtons(
-              fillColor: colorFromHex(propListBgColor),
+              fillColor: getColorFromHex(propListBgColor),
               color: Colors.white,
               selectedColor: Colors.white,
               renderBorder: false,
